@@ -16,13 +16,13 @@ def get_weather(city, years=10, overwrite=False):
     
     if file_exists and not overwrite:
         
-        print('Found a file for this city. Importing...')
+        print('Found a file for', city + '.','Importing...')
         
         weather_df = pd.read_csv(path, index_col=0)
         
     else:
         
-        print('Creating a new .csv file for this city')
+        print('Creating a new .csv file for', city)
         
         # First we declare the weather parameters. Here we'll be taking all params supported by the API
         weather_params = ['temperature_2m','relativehumidity_2m','dewpoint_2m',
@@ -47,7 +47,7 @@ def get_weather(city, years=10, overwrite=False):
 
         # Then we compute the dates used to get the weather data
         ## The API only has data until 9 days ago
-        end_date = (datetime.date.today() - relativedelta(days=9)).strftime('%Y-%m-%d') 
+        end_date = (datetime.date.today() - relativedelta(days=8)).strftime('%Y-%m-%d') 
         start_date = (datetime.date.today() - relativedelta(years=years)).strftime('%Y-%m-%d')
 
         # So we make the request to the weather API archive
@@ -56,7 +56,8 @@ def get_weather(city, years=10, overwrite=False):
                                     'longitude': lon,
                                     'start_date': start_date,
                                     'end_date': end_date,
-                                    'hourly': weather_params}).json()
+                                    'hourly': weather_params,
+                                    'timezone': 'auto'}).json()
 
         weather_df = pd.DataFrame(weather_response['hourly'], columns = ['time'] + weather_params)
         
