@@ -1,7 +1,22 @@
 import streamlit as st
-
 import numpy as np
 import pandas as pd
+
+from fastapi import FastAPI
+
+app = FastAPI()
+
+# Define a root `/` endpoint
+@app.get('/tatchi')
+def name():
+    return {'name': 'tatchi'}
+
+@app.post('/predict')
+def predict():
+    return {'City', 'Rio'}
+
+
+### streamlit lecture
 
 st.markdown("""# This is a header
 ## This is a sub header
