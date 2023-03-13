@@ -2,9 +2,12 @@ import pandas as pd
 import requests
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
+from geopy.geocoders import Nominatim
+
+
 
 class WeatherEnergy:
-    def __init__(self, limit, offset, refine, city, target, years=10):
+    def __init__(self, limit:int, offset:int, refine:str, city:list ,target:str, years=10):
         self.city = city
         self.years = years
         self.limit = limit
@@ -12,11 +15,30 @@ class WeatherEnergy:
         self.refine = refine
         self.target = target
 
+    def get_city_lonlan(self):
+
+        # Create a geolocator object
+        geolocator = Nominatim(user_agent="my_app")
+
+        coordinates = {}
+
+        for city in self.city:
+            # Get the location of the city
+            location = geolocator.geocode(city)
+
+            if location:
+                lat, lon = location.latitude, location.longitude # Extract the latitude and longitude
+                coordinates[city] = [lat,lon]
+            else:
+                print(f"Could not retrieve coordinates for {city}")
+
+        return coordinates
+
     def get_weather(self):
 
         '''
-        This function receives the name of a city and a number of years, and returns a dataframe
-        with weather data from this city during those past years
+        This function receives the name of the city list and a number of years, and returns a dataframe
+        with the average of the weather data from these city list during those past years
         '''
 
         # First we declare the weather parameters. Here we'll be taking all params supported by the API
@@ -33,34 +55,38 @@ class WeatherEnergy:
                       'soil_moisture_0_to_7cm','soil_moisture_7_to_28cm',
                       'soil_moisture_28_to_100cm','soil_moisture_100_to_255cm']
 
-        # This request is done in order to get the latitude and longitude of the desired city
-        city_response = requests.get('https://geocoding-api.open-meteo.com/v1/search',
-                           params = {'name': self.city}).json()
-
-        lat = city_response['results'][0]['latitude']
-        lon = city_response['results'][0]['longitude']
-
         # Then we compute the dates used to get the weather data
         ## The API only has data until 9 days ago
         end_date = (date.today() - relativedelta(days=8)).strftime('%Y-%m-%d')
-
         #start_date = (datetime.date.today() - relativedelta(years=years)).strftime('%Y-%m-%d')
         start_date = (date.today() - relativedelta(years=self.years)).strftime('%Y-%m-%d')
 
+        coordinates = self.get_city_lonlan()
+        weather_df_full = pd.DataFrame(columns=weather_params)
+
+        for city in self.city:
+            lat = coordinates[city][0]
+            lan = coordinates[city][1]
+
         # So we make the request to the weather API archive
-        weather_response = requests.get('https://archive-api.open-meteo.com/v1/archive',
-                           params = {'latitude': lat,
-                                    'longitude': lon,
-                                    'start_date': start_date,
-                                    'end_date': end_date,
-                                    'hourly': weather_params,
-                                    'timezone': 'auto'}).json()
+            weather_response= requests.get('https://archive-api.open-meteo.com/v1/archive',
+                            params = {'latitude': lat,
+                                        'longitude': lan,
+                                        'start_date': start_date,
+                                        'end_date': end_date,
+                                        'hourly': weather_params,
+                                        'timezone': 'auto'}).json()
+            weather_df = pd.DataFrame(weather_response['hourly'], columns = ['time'] + weather_params)
+            weather_df['time'] = pd.to_datetime(weather_df['time'], format='%Y-%m-%d')
+            weather_df = weather_df.set_index('time')
 
-        weather_df = pd.DataFrame(weather_response['hourly'], columns = ['time'] + weather_params)
-        weather_df['time'] = pd.to_datetime(weather_df['time'], format='%Y-%m-%d')
-        weather_df = weather_df.set_index('time')
+            # Format float to 1 decimal, sum the 3 tables and return the average
+            pd.options.display.float_format = "{:,.1f}".format
+            weather_df_full = pd.concat([weather_df,weather_df_full], ignore_index=False)
 
-        return weather_df
+        weather_df_full = weather_df_full /len(self.city)
+
+        return weather_df_full
 
     def get_energy_production(self):
 
@@ -97,7 +123,7 @@ class WeatherEnergy:
 
         return energy_production_df
 
-    def merge(self):
+    def merged(self):
 
         '''
         This function takes in the get_weather and the get_energy_production dataframes
