@@ -4,8 +4,6 @@ from dateutil.relativedelta import relativedelta
 import pandas as pd
 import os.path
 
-<<<<<<< HEAD
-=======
 # Get the absolute path of the directory where the script is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -13,14 +11,12 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(script_dir)
 raw_data_path = os.path.join(parent_dir, "raw_data")
 
->>>>>>> 0f2688881886502959910d4a9d62118203be9ae4
 def get_weather(city, years=10, overwrite=False):
 
     '''
     This function receives the name of a city and a number of years, and returns a dataframe
     with weather data from this city during those past years
     '''
-<<<<<<< HEAD
 
     path = '/home/caiodamasceno/code/Johnny4good/electroprophet/raw_data/df_' + city.lower() + '_weather.csv'
     file_exists = os.path.isfile(path)
@@ -29,16 +25,14 @@ def get_weather(city, years=10, overwrite=False):
 
         print('Found a file for', city + '.','Importing...')
 
-=======
-    
+
     path = raw_data_path + '/df_' + city.lower() + '_weather.csv'
-    file_exists = os.path.isfile(path) 
-    
+    file_exists = os.path.isfile(path)
+
     if file_exists and not overwrite:
-        
+
         print('Found a file for', city + '.', 'Importing...')
-        
->>>>>>> 0f2688881886502959910d4a9d62118203be9ae4
+
         weather_df = pd.read_csv(path, index_col=0)
 
     else:
@@ -72,7 +66,7 @@ def get_weather(city, years=10, overwrite=False):
         end_date = (datetime.date.today() - relativedelta(days=8)).strftime('%Y-%m-%d')
         start_date = (datetime.date.today() - relativedelta(years=years)).strftime('%Y-%m-%d')
 =======
-        end_date = (datetime.date.today() - relativedelta(days=8)).strftime('%Y-%m-%d') 
+        end_date = (datetime.date.today() - relativedelta(days=8)).strftime('%Y-%m-%d')
         #start_date = (datetime.date.today() - relativedelta(years=years)).strftime('%Y-%m-%d')
         start_date = '2013-01-01'
 >>>>>>> 0f2688881886502959910d4a9d62118203be9ae4
@@ -128,34 +122,34 @@ def get_energy_production(limit, offset, refine):
 
     return df_final
 =======
-        
+
         weather_df = pd.DataFrame(weather_response['hourly'], columns = ['time'] + weather_params)
         weather_df['time'] = pd.to_datetime(weather_df['time'], format='%Y-%m-%d')
         weather_df = weather_df.set_index('time')
-                
+
         weather_df.to_csv(path)
-    
+
     print('Done ✅')
     return weather_df
 
 def get_energy_production(limit, offset, refine,overwrite=False):
-    
+
     '''
-    This function receives the name of a region, a limit and an offset, and returns a dataframe 
+    This function receives the name of a region, a limit and an offset, and returns a dataframe
     with energy production data from this region
     '''
 
     path = raw_data_path + '/df_' + refine.lower().replace(" ", "_") + '_energy_production.csv'
     file_exists = os.path.isfile(path)
-    
+
     if file_exists and not overwrite:
-        
+
         print('Found a file for',refine + '.', 'Importing...')
-        
+
         energy_production_df = pd.read_csv(path, index_col=0, low_memory=False)
-    
+
     else:
-        
+
         print('Creating a new .csv file for', refine)
 
         #params to pass into the requests
@@ -175,17 +169,17 @@ def get_energy_production(limit, offset, refine,overwrite=False):
 
         #transform API request into a dataframe
         df_2022_today = pd.DataFrame(response_2022_today)
-        
+
         #merge those two together on just columns that exist in the first one
         energy_production_df = pd.concat([df_2013_2022, df_2022_today], sort=False,join="inner")
-        
+
         #transform the column "date_heure", so that it is compatible with the weather data
         energy_production_df.insert(0, "time", energy_production_df['date'] + ' ' + energy_production_df['heure'])
         energy_production_df['time'] =  pd.to_datetime(energy_production_df['time'])
         energy_production_df = energy_production_df.sort_values('time')
-        
+
         energy_production_df.to_csv(path)
-        
+
     print('Done ✅')
     return energy_production_df
 
