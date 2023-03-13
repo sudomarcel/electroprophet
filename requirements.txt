@@ -120,3 +120,4 @@ wrapt==1.15.0
 y-py==0.5.9
 ypy-websocket==0.8.2
 xgboost==1.7.4
+geopy==2.3.0
