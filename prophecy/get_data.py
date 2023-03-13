@@ -63,12 +63,12 @@ class WeatherEnergy:
 
         coordinates = self.get_city_lonlan()
         weather_df_full = pd.DataFrame(columns=weather_params)
-
+        cities = []
         for city in self.city:
             lat = coordinates[city][0]
             lan = coordinates[city][1]
 
-        # So we make the request to the weather API archive
+        # So we make the request to the weather API archive+
             weather_response= requests.get('https://archive-api.open-meteo.com/v1/archive',
                             params = {'latitude': lat,
                                         'longitude': lan,
@@ -82,12 +82,20 @@ class WeatherEnergy:
 
             # Format float to 1 decimal, sum the 3 tables and return the average
             pd.options.display.float_format = "{:,.1f}".format
-            weather_df_full = pd.concat([weather_df,weather_df_full], ignore_index=False)
+            print(weather_df['temperature_2m'])
+            cities.append(weather_df)
+        x=0
+        for df in cities:
+            if x==0:
+                weather_df_full=df
+                x=1
+            else:
+                weather_df_full=weather_df_full.add(df)
 
+        print(weather_df_full)
         weather_df_full = weather_df_full /len(self.city)
 
         return weather_df_full
-
     def get_energy_production(self):
 
         '''
