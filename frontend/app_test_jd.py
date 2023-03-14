@@ -7,7 +7,7 @@ from fastapi import FastAPI
 app = FastAPI()
 
 # Define a root `/` endpoint
-@app.get('/tatchi')
+@app.get('/')
 def name():
     return {'name': 'tatchi'}
 
