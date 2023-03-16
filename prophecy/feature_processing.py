@@ -4,9 +4,10 @@ import pandas as pd
 import numpy as np
 
 class FeaturePreprocessing:
-    def __init__(self,df,target):
+    def __init__(self,df,target=None):
         self.df = df
-        self.target = df[target]
+        if target!=None:
+            self.target = df[target]
 
     def get_wind_components(self):
 
@@ -133,5 +134,9 @@ class FeaturePreprocessing:
         processed_dataframe['period'] = period
         processed_dataframe = processed_dataframe.join(pd.get_dummies(processed_dataframe['period'], prefix='period'))
         processed_dataframe.drop('period', axis=1, inplace=True)
-        merge = pd.merge(processed_dataframe,self.target,left_index=True, right_index=True)
-        return merge
+
+        if self.target==None:
+            return processed_dataframe
+        else:
+            merge = pd.merge(processed_dataframe,self.target,left_index=True, right_index=True)
+            return merge
