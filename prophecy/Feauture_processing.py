@@ -4,10 +4,12 @@ import pandas as pd
 import numpy as np
 
 class FeaturePreprocessing:
-    def __init__(self,df):
+    def __init__(self,df,target):
         self.df = df
+        self.target = df[target]
 
     def get_wind_components(self):
+
 
         # Convert degrees to radians and store the values into wd_rad
         #wind direction 10 m
@@ -131,4 +133,5 @@ class FeaturePreprocessing:
         processed_dataframe['period'] = period
         processed_dataframe = processed_dataframe.join(pd.get_dummies(processed_dataframe['period'], prefix='period'))
         processed_dataframe.drop('period', axis=1, inplace=True)
-        return processed_dataframe
+        merge = pd.merge(processed_dataframe,self.target,left_index=True, right_index=True)
+        return merge
