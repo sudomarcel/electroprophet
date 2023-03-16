@@ -154,5 +154,6 @@ class WeatherEnergy:
 
         #merges the two dataframes and returns the merged_df
         merged_df = pd.merge(weather_df, energy_production_df[self.target], left_index=True, right_index=True)
+        merged_df = merged_df[merged_df[self.target].notna()]
 
         return merged_df
