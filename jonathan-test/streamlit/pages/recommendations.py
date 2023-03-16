@@ -85,7 +85,7 @@ def show_recommendations():
 def wait():
     with st.spinner("Wait, our model is reaching the stars for you..."):
         time.sleep(3)
-        #st.success("1/5...everything's gonna be alright ")
+        st.success("1/5...everything's gonna be alright ")
 
     with st.spinner("Updating API from API"):
         time.sleep(1.5)

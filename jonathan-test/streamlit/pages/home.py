@@ -7,7 +7,12 @@ import pandas as pd
 
 st.set_page_config(page_title='Home page',
                    layout="centered",
-                   initial_sidebar_state="auto")
+                   initial_sidebar_state="auto",
+                   menu_items={
+                       'Get Help': 'https://www.extremelycoolapp.com/help',
+                       'About': "# This is a header. This is an *extremely* cool app!"
+                                }
+                )
 
 def intro():
     import streamlit as st
