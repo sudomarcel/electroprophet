@@ -6,6 +6,7 @@ import numpy as np
 class FeaturePreprocessing:
     def __init__(self,df,target=None):
         self.df = df
+        self.target = target
         if target!=None:
             self.target = df[target]
 
