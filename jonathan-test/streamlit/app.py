@@ -2,12 +2,36 @@ import streamlit as st
 import requests
 import pandas as pd
 import numpy as np
+import plotly.graph_objects as go
 # import fastapi as fastAPI
 # from fastapi import main #folder name 'fasapi'
 
 st.markdown("""# Welcome to ElectroProphet app ⚡
 """)
+
+#
+# Shox a gauge
+#
+
+fig = go.Figure(go.Indicator(
+    mode = "gauge+number",
+    value = 80,
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    delta = {'reference': 100},
+    title = {'text': "Speed"}))
+
+
+st.plotly_chart(fig, use_container_width=True)
+
+#
+# Input a number
+#
+
 rows = st.number_input('nomber of rows ', min_value=0, max_value=300, step=10, value=5)
+
+#
+# Print bar chart
+#
 
 chart_data = pd.DataFrame(np.random.rand(20, 3), columns=['a', 'b', 'c'])
 
@@ -25,4 +49,4 @@ response = requests.get(url)
 
 result = response.json()
 
-st.dataframe(result)
+# st.dataframe(result)
