@@ -1,0 +1,17 @@
+README.md
+setup.py
+electroprophet.egg-info/PKG-INFO
+electroprophet.egg-info/SOURCES.txt
+electroprophet.egg-info/dependency_links.txt
+electroprophet.egg-info/not-zip-safe
+electroprophet.egg-info/requires.txt
+electroprophet.egg-info/top_level.txt
+notebooks/__init__.py
+prophecy/__init__.py
+prophecy/data_1_city.py
+prophecy/data_3_cities.py
+prophecy/feature_processing.py
+prophecy/get_data.py
+prophecy/get_data_forecast.py
+prophecy/main.py
+scripts/electroprophet.py

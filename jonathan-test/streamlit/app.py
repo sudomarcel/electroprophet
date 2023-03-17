@@ -3,8 +3,13 @@ import requests
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+
 # import fastapi as fastAPI
 # from fastapi import main #folder name 'fasapi'
+
+st.set_page_config(page_title='Welcome',
+                   layout="centered",
+                   initial_sidebar_state="auto")
 
 st.markdown("""# Welcome to ElectroProphet app ⚡
 """)

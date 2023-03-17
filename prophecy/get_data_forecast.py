@@ -9,7 +9,7 @@ from geopy.geocoders import Nominatim
 #
 
 class WeatherForecast:
-    def __init__(self, city:str, days:int):
+    def __init__(self, city, days):
         self.city = city
         self.days = days
 
