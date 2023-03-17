@@ -1,4 +1,4 @@
-from get_data import WeatherEnergy
+from get_data_forecast import WeatherForecast
 from feature_processing import FeaturePreprocessing
 import tensorflow as tf
 #df = WeatherEnergy(
