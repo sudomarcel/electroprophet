@@ -136,7 +136,7 @@ class FeaturePreprocessing:
         processed_dataframe = processed_dataframe.join(pd.get_dummies(processed_dataframe['period'], prefix='period'))
         processed_dataframe.drop('period', axis=1, inplace=True)
 
-        if self.target==None:
+        if self.target is None:
             return processed_dataframe
         else:
             merge = pd.merge(processed_dataframe,self.target,left_index=True, right_index=True)
