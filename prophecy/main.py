@@ -75,6 +75,9 @@ def main(city):
         forecasts.append(forecast)
         old_energy.append(old_energy_df)
 
+        print(forecast)
+        print(new_df)
+
         forecast_df = pd.DataFrame(forecast, index = new_df.index, columns = [key])
 
         # Getting the averages
@@ -98,10 +101,10 @@ def main(city):
             recomendations_list.append('Bad')
         else:
             recomendations_list.append('Normal')
-    
-    result = pd.DataFrame(recomendations_list, index=wind_df.index, columns=['recomendation'])
-    
+
+    result = pd.DataFrame(recomendations_list, wind_df.index, columns=['recomendation'])
+
     # Reset the warning filters to the default settings
     warnings.filterwarnings("default", category=RuntimeWarning)
-    
+
     return result
