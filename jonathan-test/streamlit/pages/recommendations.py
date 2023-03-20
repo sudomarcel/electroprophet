@@ -173,6 +173,6 @@ def wait():
         time.sleep(1.5)
         st.success("5/5...Maravilhoso")
 
-if st.button("I am an amazing button"):
+if st.button("Run the predictions"):
     wait()
     show_recommendations()
