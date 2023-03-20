@@ -6,11 +6,7 @@ import sys
 import pandas as pd
 import numpy as np
 import warnings
-from statsmodels.tsa.seasonal import seasonal_decompose
-
-# Test
-
-sys.path.append('../')
+from statsmodels.tsa.seasonal import seasonal_decompose    
 
 def get_average(df, target):
     
@@ -21,7 +17,7 @@ def get_average(df, target):
     return observed
 
 def main(city):
-    
+        
     # Filter out RuntimeWarning
     warnings.filterwarnings("ignore", category=RuntimeWarning)
     
@@ -31,14 +27,14 @@ def main(city):
     cons_df = ForecastDataframe(city).return_scaled_forecast()
     
     # Loading the models
-    wind_model = tf.keras.models.load_model('saved_model/wind_model')
-    sun_model = tf.keras.models.load_model('saved_model/sun_model')
-    cons_model = tf.keras.models.load_model('saved_model/cons_model')
+    wind_model = tf.keras.models.load_model('../saved_model/wind_model')
+    sun_model = tf.keras.models.load_model('../saved_model/sun_model')
+    cons_model = tf.keras.models.load_model('../saved_model/cons_model')
     
     # Loading the historical data
-    wind_old_df = pd.read_csv('raw_data/wind_old.csv', index_col = 0)
-    sun_old_df = pd.read_csv('raw_data/sun_old.csv', index_col = 0)
-    cons_old_df = pd.read_csv('raw_data/cons_old.csv', index_col = 0)
+    wind_old_df = pd.read_csv('../raw_data/wind_old.csv', index_col = 0)
+    sun_old_df = pd.read_csv('../raw_data/sun_old.csv', index_col = 0)
+    cons_old_df = pd.read_csv('../raw_data/cons_old.csv', index_col = 0)
     
     # Defining the params
     targets = {'eolien': ('Hauts-de-France','eolien',['Heudicourt','Bucy-les-Pierrepont','Riencourt'],wind_df,wind_model,wind_old_df),
@@ -102,7 +98,9 @@ def main(city):
         else:
             recomendations_list.append('Normal')
     
+    result = pd.DataFrame(recomendations_list, index=wind_df.index, columns=['recomendation'])
+    
     # Reset the warning filters to the default settings
     warnings.filterwarnings("default", category=RuntimeWarning)
     
-    return recomendations_list
+    return result
