@@ -4,7 +4,8 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 from prophecy import main
-
+import os
+import sys
 # import fastapi as fastAPI
 # from fastapi import main #folder name 'fasapi'
 
@@ -41,7 +42,7 @@ rows = st.number_input('nomber of rows ', min_value=0, max_value=300, step=10, v
 
 chart_data = pd.DataFrame(np.random.rand(20, 3), columns=['a', 'b', 'c'])
 
-data = pd.read_csv('/home/jonathand/code/Johnny4good/electroprophet/jonathan-test/fastapi/data/df_amiens_weather.csv')
+data = pd.read_csv('jonathan-test/fastapi/data/df_amiens_weather.csv')
 
 st.write(data)
 st.bar_chart(chart_data)
