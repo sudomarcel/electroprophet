@@ -2,20 +2,13 @@ from fastapi import FastAPI
 import matplotlib.pyplot as plt
 import pandas as pd
 from prophecy.main import main
+import sys
+import os
+sys.path.append('../')
 
 app = FastAPI()
 
 @app.get("/")
 def index(city:str):
     prophecy = main(city)
-    return type(prophecy)
-
-@app.get("/printdata")
-def print_data():
-    data = 'data/df_amiens_weather.csv'
-    weather_df = pd.read_csv(data, index_col=0)#[0:row]
-    return weather_df
-
-@app.get("/questions")
-def load_questions():
-    return print_data().to_dict(orient="records")
+    return {"result": prophecy}

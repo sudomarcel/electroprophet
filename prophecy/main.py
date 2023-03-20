@@ -7,11 +7,10 @@ import pandas as pd
 import numpy as np
 import warnings
 from statsmodels.tsa.seasonal import seasonal_decompose
-
+import os
 # Test
 
 sys.path.append('../')
-
 def get_average(df, target):
 
     tsm_decompose = seasonal_decompose(np.array(df[target]), model = 'additive', period = 24)
@@ -36,9 +35,9 @@ def main(city):
     cons_model = tf.keras.models.load_model('/home/jonathand/code/Johnny4good/electroprophet/saved_model/cons_model')
 
     # Loading the historical data
-    wind_old_df = pd.read_csv('../raw_data/wind_old.csv', on_bad_lines='skip', index_col = 0)
-    sun_old_df = pd.read_csv('../raw_data/sun_old.csv', on_bad_lines='skip', index_col = 0)
-    cons_old_df = pd.read_csv('../raw_data/cons_old.csv', on_bad_lines='skip', index_col = 0)
+    wind_old_df = pd.read_csv('/home/jonathand/code/Johnny4good/electroprophet/raw_data/wind_old.csv', on_bad_lines='skip', index_col = 0)
+    sun_old_df = pd.read_csv('/home/jonathand/code/Johnny4good/electroprophet/raw_data/sun_old.csv', on_bad_lines='skip', index_col = 0)
+    cons_old_df = pd.read_csv('/home/jonathand/code/Johnny4good/electroprophet/raw_data/cons_old.csv', on_bad_lines='skip', index_col = 0)
 
     # Defining the params
     targets = {'eolien': ('Hauts-de-France','eolien',['Heudicourt','Bucy-les-Pierrepont','Riencourt'],wind_df,wind_model,wind_old_df),
@@ -51,11 +50,8 @@ def main(city):
 
     # Looping over the 3 models
     for key in targets:
-
         processed_df = targets[key][5]
-
         old_energy_df = processed_df[[key]]
-
         old_df = processed_df.drop(columns=key)
 
         new_df = targets[key][3]
