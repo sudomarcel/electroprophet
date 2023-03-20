@@ -3,6 +3,7 @@ import time
 import sys, os
 import pandas as pd
 from prophecy.get_data_forecast import WeatherForecast # step 2 below
+from prophecy.main import main
 # from prophecy.feature_processing import XXX # step 3 below
 
 st.set_page_config(page_title='Recommendation',
@@ -10,7 +11,8 @@ st.set_page_config(page_title='Recommendation',
                    initial_sidebar_state="auto")
 
 
-st.markdown("Try our app")
+if st.button("Run the predictions"):
+    st.markdown("Try our app")
 
 ####################################
 # STEP 1 :
@@ -21,30 +23,32 @@ st.markdown("Try our app")
 place = st.text_input(label="Enter a city:")
 user_input = {"place":place}
 
+main(place)
+
 ####################################
 # STEP 2 :
 # GET WEATHER FORECAST FROM THE CITY
 #
 ####################################
 
-def weather_forecast(place):
-    """
-    This function call the method get_weather_forecast()
-    from the class prophecy.WeatherForecast
-    and return the response from the weather API.
-    """
+# def weather_forecast(place):
+#     """
+#     This function call the method get_weather_forecast()
+#     from the class prophecy.WeatherForecast
+#     and return the response from the weather API.
+#     """
 
-    weather = WeatherForecast(place, 1)
-    response = weather.get_weather_forecast()
-    return response
+#     weather = WeatherForecast(place, 1)
+#     response = weather.get_weather_forecast()
+#     return response
 
-if st.button("Run the predictions"):
-    place_dict = weather_forecast(place)
-    #wait()
-    #show_recommendations()
-    #df = pd.DataFrame([place_dict])
-    st.markdown("Importing weather forecast from the city...")
-    st.table(place_dict)
+# if st.button("Run the predictions"):
+#     place_dict = weather_forecast(place)
+#     #wait()
+#     #show_recommendations()
+#     #df = pd.DataFrame([place_dict])
+#     st.markdown("Importing weather forecast from the city...")
+#     st.table(place_dict)
 
 ####################################
 # STEP 3 :

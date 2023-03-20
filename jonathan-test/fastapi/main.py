@@ -1,12 +1,14 @@
 from fastapi import FastAPI
 import matplotlib.pyplot as plt
 import pandas as pd
+from prophecy.main import main
 
 app = FastAPI()
 
 @app.get("/")
-def index():
-    return {"status": "ok"}
+def index(city:str):
+    prophecy = main(city)
+    return type(prophecy)
 
 @app.get("/printdata")
 def print_data():

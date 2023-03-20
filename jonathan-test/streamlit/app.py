@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+from prophecy import main
 
 # import fastapi as fastAPI
 # from fastapi import main #folder name 'fasapi'
