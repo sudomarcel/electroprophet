@@ -11,6 +11,7 @@ import os
 # Test
 
 sys.path.append('../')
+
 def get_average(df, target):
 
     tsm_decompose = seasonal_decompose(np.array(df[target]), model = 'additive', period = 24)
@@ -97,8 +98,10 @@ def main(city):
             recomendations_list.append('Bad')
         else:
             recomendations_list.append('Normal')
-
+    
+    result = pd.DataFrame(recomendations_list, index=wind_df.index, columns=['recomendation'])
+    
     # Reset the warning filters to the default settings
     warnings.filterwarnings("default", category=RuntimeWarning)
-
-    return recomendations_list
+    
+    return result
