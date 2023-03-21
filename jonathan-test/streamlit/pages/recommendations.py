@@ -23,7 +23,8 @@ try:
     place = st.text_input(label="Enter a city:")
 
     df = main(place)
-    st.dataframe(df)
+    #st.dataframe(df)
+
     if st.button("Run the predictions"):
         st.dataframe(df)
 

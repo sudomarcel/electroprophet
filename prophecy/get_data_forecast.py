@@ -80,8 +80,8 @@ class WeatherForecast:
         weather_forecast_df = pd.DataFrame(weather_forecast_response['hourly'], columns = ['time'] + weather_params)
         weather_forecast_df['time'] = pd.to_datetime(weather_forecast_df['time'], format='%Y-%m-%d')
         #get the start and end time
-        start_time = datetime.now()
-        end_time = start_time + timedelta(hours=27)
+        start_time = datetime.now()+timedelta(hours=3)
+        end_time = start_time + timedelta(hours=24)
         weather_forecast_df = weather_forecast_df[(weather_forecast_df['time'] >= start_time) & (weather_forecast_df['time'] < end_time)]
         #set time as index
         weather_forecast_df = weather_forecast_df.set_index('time')
