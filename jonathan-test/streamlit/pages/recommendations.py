@@ -28,14 +28,18 @@ try:
 
     if st.button("Run the predictions"):
 
-        progress_text = "Operation in progress. Please wait."
-        my_bar = st.progress(0, text=progress_text)
+        with st.container():
+            st.write('---')
+            progress_text = "Operation in progress. Please wait."
+            my_bar = st.progress(0, text=progress_text)
 
-        for percent_complete in range(100):
-            time.sleep(0.1)
-            my_bar.progress(percent_complete + 1, text=progress_text)
+            for percent_complete in range(100):
+                time.sleep(0.1)
+                my_bar.progress(percent_complete + 1, text=progress_text)
 
-        st.dataframe(df)
+            st.dataframe(df)
+
+            st.balloons()
     ####################################
     # STEP 2 :
     # GET WEATHER FORECAST FROM THE CITY
