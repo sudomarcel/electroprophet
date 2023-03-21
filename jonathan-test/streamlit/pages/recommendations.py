@@ -4,6 +4,8 @@ import sys, os
 import pandas as pd
 from prophecy.get_data_forecast import WeatherForecast # step 2 below
 from prophecy.main import main
+import time
+
 # from prophecy.feature_processing import XXX # step 3 below
 try:
     st.set_page_config(page_title='Recommendation',
@@ -21,13 +23,19 @@ try:
     ####################################
 
     place = st.text_input(label="Enter a city:")
-
     df = main(place)
     #st.dataframe(df)
 
     if st.button("Run the predictions"):
-        st.dataframe(df)
 
+        progress_text = "Operation in progress. Please wait."
+        my_bar = st.progress(0, text=progress_text)
+
+        for percent_complete in range(100):
+            time.sleep(0.1)
+            my_bar.progress(percent_complete + 1, text=progress_text)
+
+        st.dataframe(df)
     ####################################
     # STEP 2 :
     # GET WEATHER FORECAST FROM THE CITY
