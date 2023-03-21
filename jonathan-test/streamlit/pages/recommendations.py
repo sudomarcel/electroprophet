@@ -83,9 +83,35 @@ try:
     #
     ####################################
 
-    # img_link = {"unhappy" : 'https://cdn4.iconfinder.com/data/icons/aami-web-internet/64/aami13-41-1024.png',
-    #             "neutral" : 'https://cdn4.iconfinder.com/data/icons/aami-web-internet/64/aami13-04-1024.png',
-    #             "happy" : 'https://cdn4.iconfinder.com/data/icons/aami-web-internet/64/aami13-46-1024.png'}
+    img_link = {"bad_face" : 'https://cdn4.iconfinder.com/data/icons/aami-web-internet/64/aami13-41-1024.png',
+                "neutral_face" : 'https://cdn4.iconfinder.com/data/icons/aami-web-internet/64/aami13-04-1024.png',
+                "good_face" : 'https://cdn4.iconfinder.com/data/icons/aami-web-internet/64/aami13-46-1024.png'}
+    
+    # create a dictionary that maps each mood to the corresponding image file
+    mood_to_image = {
+    'Good': img_link['good_face'],
+    'Bad': img_link['bad_face'],
+    'Normal': img_link['neutral_face']}
+    
+    # use the map function to apply the mapping to the DataFrame
+    df['image'] = df['recommendation'].map(mood_to_image)
+    
+    # set the number of columns and rows for the image grid
+    num_cols = 4
+    num_rows = 6
+
+    # create the image grid using the beta_columns function
+    col_list = st.beta_columns(num_cols)
+    for i, col in enumerate(col_list):
+        for j in range(num_rows):
+            with col:
+                # load the image for the current mood
+                mood = df['recommendation'][num_rows*i+j]
+                image_file = mood_to_image[mood]
+                image = Image.open(image_file)
+
+                # display the image on the Streamlit app
+                st.image(image, width=100)
 
     # def show_recommendations():
     #     st.balloons()
